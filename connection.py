@@ -5,10 +5,10 @@ if len(rm.list_resources())==0:
 else:
 	print('Device Found:', rm.list_resources())
 try:
-	cm22c = rm.open_resource("COM3")
+	cm22c = rm.open_resource('GPIB0::12::INSTR')
 	print("CM22C Successfully Connected")
 
-	lcr4284a = rm.open_resource('GPIB0::17::INSTR')
+	lcr4284a = rm.open_resource('GPIB0::25::INSTR')
 	print("LCR4284A Successfully Connected")
 except:
 	print('Error')
