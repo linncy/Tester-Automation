@@ -143,7 +143,7 @@
       <string>K</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="boxStartT_7">
+    <widget class="QLineEdit" name="boxStepT">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -390,7 +390,7 @@
       <string>Bias</string>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="groupBoxIntegration">
      <property name="geometry">
       <rect>
        <x>0</x>
