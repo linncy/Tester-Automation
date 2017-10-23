@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1024, 768)
+        MainWindow.resize(1440, 900)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.buttonConnect = QtWidgets.QPushButton(self.centralwidget)
@@ -132,15 +132,27 @@ class Ui_MainWindow(object):
         self.openGLWidget = QtWidgets.QOpenGLWidget(self.groupBoxData)
         self.openGLWidget.setGeometry(QtCore.QRect(10, 20, 771, 441))
         self.openGLWidget.setObjectName("openGLWidget")
+        #------------
+        # self.model=QtGui.QStandardItemModel(10,3);
+        # self.model.setHorizontalHeaderLabels(['T','f','C'])
+        # for row in range(3):
+        #     for column in range(3):
+        #         item = QtGui.QStandardItem("row %s, column %s"%(row,column))
+        #         self.model.setItem(row, column, item)  
+        #------Up is New------      
         self.tableView = QtWidgets.QTableView(self.groupBoxData)
         self.tableView.setGeometry(QtCore.QRect(10, 480, 771, 241))
         self.tableView.setObjectName("tableView")
+        self.tableView.setModel(self.model)
+        #-------------
         self.buttonSave = QtWidgets.QPushButton(self.groupBoxData)
         self.buttonSave.setGeometry(QtCore.QRect(700, 730, 75, 23))
         self.buttonSave.setObjectName("buttonSave")
+        self.buttonSave.clicked.connect(self.savetable)
         self.pushClear = QtWidgets.QPushButton(self.groupBoxData)
         self.pushClear.setGeometry(QtCore.QRect(20, 730, 75, 23))
         self.pushClear.setObjectName("pushClear")
+        self.pushClear.clicked.connect(self.cleartable)
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar.setGeometry(QtCore.QRect(10, 550, 118, 23))
         self.progressBar.setProperty("value", 24)
