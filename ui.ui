@@ -257,7 +257,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>7</string>
+      <string>6</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="boxMultiplef">

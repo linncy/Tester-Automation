@@ -1,4 +1,4 @@
-import sys
+import sys, os, random
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton, QMessageBox, QTableView
 from PyQt5.QtCore import Qt
@@ -6,6 +6,11 @@ from PyQt5 import QtGui
 from ui_mainwindow import Ui_MainWindow
 import visa
 import csv
+import matplotlib
+matplotlib.use('Qt5Agg')
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
 
 rm = visa.ResourceManager()
 ERRORS=0.1
@@ -57,6 +62,9 @@ class main(QMainWindow, Ui_MainWindow):
         #     for column in range(3):
         #         item = QtGui.QStandardItem("row %s, column %s"%(row,column))
         #         self.model.setItem(row, column, item)  
+
+ #   def curveplot(self,data):
+
 
 #响应clear按钮，清空model并重新初始化model，更新tableView
     def cleartable(self): 
@@ -122,6 +130,7 @@ class main(QMainWindow, Ui_MainWindow):
                     print(fetc)
                 self.table(self,inputa,fetc[0],freq)
                 f=f+Multiplef
+
             T=T+StepT
 
 if __name__ == '__main__':

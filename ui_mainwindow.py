@@ -5,8 +5,16 @@
 # Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
-
+import sys, os, random
 from PyQt5 import QtCore, QtGui, QtWidgets
+import matplotlib
+matplotlib.use('Qt5Agg')
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -127,11 +135,61 @@ class Ui_MainWindow(object):
         self.buttonStop.setGeometry(QtCore.QRect(10, 480, 75, 23))
         self.buttonStop.setObjectName("buttonStop")
         self.groupBoxData = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBoxData.setGeometry(QtCore.QRect(149, 9, 791, 771))
+        self.groupBoxData.setGeometry(QtCore.QRect(149, 9, 1000, 800))
         self.groupBoxData.setObjectName("groupBoxData")
-        self.openGLWidget = QtWidgets.QOpenGLWidget(self.groupBoxData)
-        self.openGLWidget.setGeometry(QtCore.QRect(10, 20, 771, 441))
-        self.openGLWidget.setObjectName("openGLWidget")
+#----------------------------------Graph---------------------
+        self.widgetGraphic = QtWidgets.QWidget(self.groupBoxData)
+        self.widgetGraphic.setGeometry(QtCore.QRect(10, 20, 1000, 441))
+        self.widgetGraphic.setObjectName("widgetGraphic")
+        # self.buttonTest = QtWidgets.QPushButton(self.widgetGraphic)
+        # self.buttonTest.setGeometry(QtCore.QRect(10, 20, 30, 40))
+        # self.buttonTest.setObjectName("buttonStop")
+        self.dpi = 100
+        self.fig = Figure((9, 4.41), dpi=self.dpi)
+        self.canvas = FigureCanvas(self.fig)
+        self.canvas.setParent(self.widgetGraphic)
+        self.mpl_toolbar = NavigationToolbar(self.canvas, self.widgetGraphic)
+        # hbox = QtWidgets.QHBoxLayout()
+        # vbox = QtWidgets.QVBoxLayout()
+        # vbox.addWidget(self.mpl_toolbar)
+        # vbox.addWidget(self.canvas)
+        # vbox.addLayout(hbox)
+        # self.widgetGraphic.setLayout(vbox)
+        # self.setCentralWidget(self.widgetGraphic)
+        self.axes = self.fig.add_subplot(111)
+        np.random.seed(42)
+        x = np.linspace(0, 5, 100)
+        y = 2*np.sin(x) + 0.3*x**2
+        # self.axes.bar(
+        #     left=0, 
+        #     height=100.0, 
+        #     width=1, 
+        #     align='center', 
+        #     alpha=0.44,
+        #     picker=5)
+        # self.canvas.draw()
+        # mpl.rcParams['xtick.labelsize'] = 24
+        # mpl.rcParams['ytick.labelsize'] = 24
+        # np.random.seed(42)
+        # x = np.linspace(0, 5, 100)
+        # y = 2*np.sin(x) + 0.3*x**2
+        # y_data = y + np.random.normal(scale=0.3, size=100)
+        # plt.figure('data & model')
+        # plt.plot(x, y, 'k', lw=3)
+        # plt.plot(x, y_data)
+        # plt.savefig('result.png')
+        # plt.show()
+       #  self.dpi=100
+       #  self.fig = Figure((5.0, 4.0), dpi=self.dpi)
+       #  self.canvas = FigureCanvas(self.fig)
+       #  self.canvas.setParent(self.widgetGraphic)
+
+       #  self.axes = self.fig.add_subplot(111)
+       # # self.canvas.mpl_connect('pick_event', self.on_pick)
+       #  self.mpl_toolbar = NavigationToolbar(self.canvas, self.widgetGraphic)
+       #  self.textbox = QtWidgets.QLineEdit(self.widgetGraphic)
+       #  self.textbox.setMinimumWidth(200)
+#--------------------------------------------------------------
         #------------
         # self.model=QtGui.QStandardItemModel(10,3);
         # self.model.setHorizontalHeaderLabels(['T','f','C'])
@@ -229,7 +287,7 @@ class Ui_MainWindow(object):
         self.label_18.setText(_translate("MainWindow", "Stop Frequency"))
         self.label_19.setText(_translate("MainWindow", "10E"))
         self.label_20.setText(_translate("MainWindow", "Hz"))
-        self.boxStopf.setText(_translate("MainWindow", "7"))
+        self.boxStopf.setText(_translate("MainWindow", "6"))
         self.boxMultiplef.setText(_translate("MainWindow", "0.5"))
         self.label_23.setText(_translate("MainWindow", "Hz"))
         self.label_22.setText(_translate("MainWindow", "10E"))
