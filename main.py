@@ -11,6 +11,7 @@ matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
+from MatplotlibWidget import *
 
 rm = visa.ResourceManager()
 ERRORS=0.1
@@ -27,7 +28,7 @@ class main(QMainWindow, Ui_MainWindow):
 #响应Connect Instruments按钮的功能。连接所有仪器并弹窗提示。
 
     def connect(self):
-        self.table(10.400000,+3.38211E-07,+3.15789E+03)#for debug
+        self.table(10.423456,+3.38211E-07,10**5.5)#for debug
         if len(rm.list_resources())==0:
             print('No Device Found.')
         else:
@@ -63,7 +64,10 @@ class main(QMainWindow, Ui_MainWindow):
         #         item = QtGui.QStandardItem("row %s, column %s"%(row,column))
         #         self.model.setItem(row, column, item)  
 
- #   def curveplot(self,data):
+    def curveplot(self,data,temp):
+        num_of_curve=len(data)
+        
+
 
 
 #响应clear按钮，清空model并重新初始化model，更新tableView
@@ -108,7 +112,6 @@ class main(QMainWindow, Ui_MainWindow):
             strIntegration='LONG,'
         print(StartT,StopT,StepT,Startf,Stopf,Multiplef,LevelV,BiasV,strIntegration)
         print('Sweep Start on loop1, Input Channel A')
-
         cm22c.write('loop 1:setpt %9.6f'%StartT)
         cm22c.write('control')
         while(not((cm22c.query("input? a")<=Startf*(1+ERRORS))and(cm22c.query("input? a")>=Startf*(1-ERRORS)))):
@@ -120,6 +123,7 @@ class main(QMainWindow, Ui_MainWindow):
                 next
             inputa=cm22c.query("input? a")
             print(inputa)
+            aSetofData=[]
             f=Startf
             while (f<=Stopf):
                 print("FREQ "+'%6.3f'%10**i)
@@ -128,9 +132,11 @@ class main(QMainWindow, Ui_MainWindow):
                     freq=lcr4284a.query("FREQuency?")
                     fetc=lcr4284a.query("FETC?")
                     print(fetc)
-                self.table(self,inputa,fetc[0],freq)
+#                self.table(self,inputa,fetc[0],freq) 实际值
+                self.table(self,inputa,fetc[0],10**f)#温度实际值，电容实际值，频率理想值
+                aSetofData.append([fetc[0],f]) #某一温度下的一组C-f数据
                 f=f+Multiplef
-
+            self.curveplot(self,aSetofData,inputa)#某一温度下的一组C-f数据+温度值
             T=T+StepT
 
 if __name__ == '__main__':

@@ -15,11 +15,12 @@ from matplotlib.figure import Figure
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from MatplotlibWidget import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1440, 900)
+        MainWindow.resize(950, 850)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.buttonConnect = QtWidgets.QPushButton(self.centralwidget)
@@ -135,31 +136,31 @@ class Ui_MainWindow(object):
         self.buttonStop.setGeometry(QtCore.QRect(10, 480, 75, 23))
         self.buttonStop.setObjectName("buttonStop")
         self.groupBoxData = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBoxData.setGeometry(QtCore.QRect(149, 9, 1000, 800))
+        self.groupBoxData.setGeometry(QtCore.QRect(149, 9, 800, 800))
         self.groupBoxData.setObjectName("groupBoxData")
 #----------------------------------Graph---------------------
-        self.widgetGraphic = QtWidgets.QWidget(self.groupBoxData)
-        self.widgetGraphic.setGeometry(QtCore.QRect(10, 20, 1000, 441))
+        self.widgetGraphic = MatplotlibWidget(self.groupBoxData)
+        self.widgetGraphic.setGeometry(QtCore.QRect(10, 20, 780, 470))
         self.widgetGraphic.setObjectName("widgetGraphic")
         # self.buttonTest = QtWidgets.QPushButton(self.widgetGraphic)
         # self.buttonTest.setGeometry(QtCore.QRect(10, 20, 30, 40))
         # self.buttonTest.setObjectName("buttonStop")
-        self.dpi = 100
-        self.fig = Figure((9, 4.41), dpi=self.dpi)
-        self.canvas = FigureCanvas(self.fig)
-        self.canvas.setParent(self.widgetGraphic)
-        self.mpl_toolbar = NavigationToolbar(self.canvas, self.widgetGraphic)
-        # hbox = QtWidgets.QHBoxLayout()
+        # self.dpi = 100
+        # self.fig = Figure((9, 4.41), dpi=self.dpi)
+        # self.canvas = FigureCanvas(self.fig)
+        # self.canvas.setParent(self.widgetGraphic)
+        # self.mpl_toolbar = NavigationToolbar(self.canvas, self.widgetGraphic)
+        # # hbox = QtWidgets.QHBoxLayout()
         # vbox = QtWidgets.QVBoxLayout()
         # vbox.addWidget(self.mpl_toolbar)
         # vbox.addWidget(self.canvas)
         # vbox.addLayout(hbox)
         # self.widgetGraphic.setLayout(vbox)
         # self.setCentralWidget(self.widgetGraphic)
-        self.axes = self.fig.add_subplot(111)
-        np.random.seed(42)
-        x = np.linspace(0, 5, 100)
-        y = 2*np.sin(x) + 0.3*x**2
+        # self.axes = self.fig.add_subplot(111)
+        # np.random.seed(42)
+        # x = np.linspace(0, 5, 100)
+        # y = 2*np.sin(x) + 0.3*x**2
         # self.axes.bar(
         #     left=0, 
         #     height=100.0, 
