@@ -15,6 +15,9 @@ from MatplotlibWidget import *
 
 rm = visa.ResourceManager()
 ERRORS=0.1
+temp_data=[] #画图数据点
+ydata=[] #画图数据点
+label_data=[] #画图中曲线标签
 
 class main(QMainWindow, Ui_MainWindow):
 
@@ -29,6 +32,9 @@ class main(QMainWindow, Ui_MainWindow):
 
     def connect(self):
         self.table(10.423456,+3.38211E-07,10**5.5)#for debug
+        self.curveplot([[+3.38211E-07,3.5],[+2.38211E-07,4.0],[+1.38211E-07,4.5]],10.4)#for debug
+        self.curveplot([[+3.38211E-07,3.5],[+2.38211E-07,4.0],[+1.38211E-07,4.5]],11.4)#for debug
+        self.curveplot([[+3.38211E-07,3.5],[+2.38211E-07,4.0],[+1.38211E-07,4.5]],12.4)#for debug
         if len(rm.list_resources())==0:
             print('No Device Found.')
         else:
@@ -64,14 +70,27 @@ class main(QMainWindow, Ui_MainWindow):
         #         item = QtGui.QStandardItem("row %s, column %s"%(row,column))
         #         self.model.setItem(row, column, item)  
 
-    def curveplot(self,data,temp):
+    def curveplot(self,data,temp):  #data=aSetofData example: [[+3.38211E-07,3.5],[+4.13321E-07,4.0]]
         num_of_curve=len(data)
-        
-
+        if len(ydata)==0:
+            for i in range(num_of_curve):
+                ydata.append([])
+        if len(label_data)==0:
+            for i in range(num_of_curve):
+                label_data.append('f=%sHz'%str(data[i][1]))
+        for i in range(num_of_curve):
+            ydata[i].append(data[i][0])
+        temp_data.append(temp)
+        # self.widgetGraphic.mpl.real_time_plot_multicurve(self.mpl,point_data,num_of_curve)
+        self.widgetGraphic.mpl.real_time_plot_multicurve(temp_data,ydata,label_data,num_of_curve)
+        # self.widgetGraphic.mpl.start_static_plot()
 
 
 #响应clear按钮，清空model并重新初始化model，更新tableView
     def cleartable(self): 
+        temp_data=[] #for debug
+        ydata=[] #for debug
+        label_data=[] #for debug
         self.model.clear()
         Ui_MainWindow.model=QtGui.QStandardItemModel(0,3);#model初始化
         Ui_MainWindow.model.setHorizontalHeaderLabels(['T(K)','C(F)','f(Hz)'])#model初始化
@@ -93,6 +112,7 @@ class main(QMainWindow, Ui_MainWindow):
         datacsv.close()
         print('Successfully Saved')
 
+
     def startTCf(self):
         cm22c.write('stop') #Stop all control loops at first.
         print('Start T-C-f Sweep.')
@@ -112,6 +132,9 @@ class main(QMainWindow, Ui_MainWindow):
             strIntegration='LONG,'
         print(StartT,StopT,StepT,Startf,Stopf,Multiplef,LevelV,BiasV,strIntegration)
         print('Sweep Start on loop1, Input Channel A')
+        point_data=[] #清空画图数据点
+        label_data=[] #清空画图中曲线标签
+        self.cleartable(self) #清空表
         cm22c.write('loop 1:setpt %9.6f'%StartT)
         cm22c.write('control')
         while(not((cm22c.query("input? a")<=Startf*(1+ERRORS))and(cm22c.query("input? a")>=Startf*(1-ERRORS)))):
@@ -136,7 +159,7 @@ class main(QMainWindow, Ui_MainWindow):
                 self.table(self,inputa,fetc[0],10**f)#温度实际值，电容实际值，频率理想值
                 aSetofData.append([fetc[0],f]) #某一温度下的一组C-f数据
                 f=f+Multiplef
-            self.curveplot(self,aSetofData,inputa)#某一温度下的一组C-f数据+温度值
+            self.curveplot(self,aSetofData,inputa)#某一温度下的一组C-f数据+温度值 aSetofData example: [[+3.38211E-07,3.5],[+4.13321E-07,4.0]]
             T=T+StepT
 
 if __name__ == '__main__':
