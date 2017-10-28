@@ -13,6 +13,12 @@ from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationTo
 from matplotlib.figure import Figure
 from MatplotlibWidget import *
 
+import numpy as numpy
+from numpy import random as nr
+import threading
+from time import ctime,sleep
+from multiprocessing import Process
+
 rm = visa.ResourceManager()
 ERRORS=0.1
 temp_data=[] #画图数据点
@@ -28,13 +34,34 @@ class main(QMainWindow, Ui_MainWindow):
         super().__init__(parent)
         self.setupUi(self)
 
+
+#模拟curveplot在很多数据点的情况下的响应性能
+    def debug_curveplot(self):
+        #----Parameter regarding Exp------
+        num_of_curve=7
+        startF=3
+        startT=10.0
+        stopT=300
+        stepT=0.4
+        #---------------------------------
+        T=startT
+        while(T<=stopT):
+            aSetofData=[]
+            for i in range(num_of_curve):
+                f=num_of_curve+0.5*i
+                aSetofData.append([nr.randint(0,3)+2*i,f])
+            main.curveplot(self,aSetofData,T)
+            QApplication.processEvents()
+            T=T+stepT
+
 #响应Connect Instruments按钮的功能。连接所有仪器并弹窗提示。
 
     def connect(self):
         self.table(10.423456,+3.38211E-07,10**5.5)#for debug
-        self.curveplot([[+3.38211E-07,3.5],[+2.38211E-07,4.0],[+1.38211E-07,4.5]],10.4)#for debug
-        self.curveplot([[+3.38211E-07,3.5],[+2.38211E-07,4.0],[+1.38211E-07,4.5]],11.4)#for debug
-        self.curveplot([[+3.38211E-07,3.5],[+2.38211E-07,4.0],[+1.38211E-07,4.5]],12.4)#for debug
+       # self.curveplot([[+3.38211E-07,3.5],[+2.38211E-07,4.0],[+1.38211E-07,4.5]],10.4)#for debug
+       # self.curveplot([[+3.38211E-07,3.5],[+2.38211E-07,4.0],[+1.38211E-07,4.5]],11.4)#for debug
+       # self.curveplot([[+3.38211E-07,3.5],[+2.38211E-07,4.0],[+1.38211E-07,4.5]],12.4)#for debug
+        self.debug_curveplot() #for debug
         if len(rm.list_resources())==0:
             print('No Device Found.')
         else:
@@ -160,6 +187,7 @@ class main(QMainWindow, Ui_MainWindow):
                 aSetofData.append([fetc[0],f]) #某一温度下的一组C-f数据
                 f=f+Multiplef
             self.curveplot(self,aSetofData,inputa)#某一温度下的一组C-f数据+温度值 aSetofData example: [[+3.38211E-07,3.5],[+4.13321E-07,4.0]]
+            QApplication.processEvents()#处理事件的同时刷新页面
             T=T+StepT
 
 if __name__ == '__main__':

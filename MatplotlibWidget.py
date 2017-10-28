@@ -51,7 +51,7 @@ class MyMplCanvas(FigureCanvas):
 		self.axes.set_ylabel('C')
 		self.axes.set_xlabel('T')
 		self.axes.grid(True)
-		self.axes.legend()
+		self.axes.legend(loc='upper center', bbox_to_anchor=(0.8,1.16),ncol=3,fancybox=True,shadow=True)
 		self.draw()
 
 class MatplotlibWidget(QWidget):
