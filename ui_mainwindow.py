@@ -212,10 +212,12 @@ class Ui_MainWindow(object):
         self.pushClear.setGeometry(QtCore.QRect(20, 730, 75, 23))
         self.pushClear.setObjectName("pushClear")
         self.pushClear.clicked.connect(self.cleartable)
+        #----------------------------------------------------
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar.setGeometry(QtCore.QRect(10, 550, 118, 23))
-        self.progressBar.setProperty("value", 24)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
+        #-----------------------------------------------------
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 951, 21))
@@ -242,6 +244,7 @@ class Ui_MainWindow(object):
         self.actionSave_Data.setObjectName("actionSave_Data")
         self.actionTemperature_Controller = QtWidgets.QAction(MainWindow)
         self.actionTemperature_Controller.setObjectName("actionTemperature_Controller")
+        self.actionTemperature_Controller.triggered.connect(self.on_instrument_TemperatureController)
         self.actionLRC_Meter = QtWidgets.QAction(MainWindow)
         self.actionLRC_Meter.setObjectName("actionLRC_Meter")
         self.actionC_V_Sweep = QtWidgets.QAction(MainWindow)

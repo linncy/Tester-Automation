@@ -14,7 +14,6 @@ import matplotlib.pyplot as plt
 
 class MyMplCanvas(FigureCanvas):
 	def __init__(self, parent=None, width=5, height=4, dpi=80):
-		plt.close()
 		self.fig = Figure(figsize=(width, height), dpi=dpi)
 		self.axes = self.fig.add_subplot(111)
 		self.axes.hold(True)
@@ -37,6 +36,15 @@ class MyMplCanvas(FigureCanvas):
 		self.axes.set_xlabel('X Axe')
 		self.axes.grid(True)
 
+	def clear_figure_by_replot(self):
+		self.axes.cla()
+		self.fig.suptitle('T-C-f')
+		line0=self.axes.plot([],[])
+		self.axes.set_ylabel('C')
+		self.axes.set_xlabel('T')
+		self.axes.grid(True)
+		self.draw()
+
 	def real_time_plot_multicurve(self,x_data,y_data,label_data,num_of_curve):#Example of point_data: [[10,[1,2,3,4,5,6,7]],[10.4,[7,6,5,4,3,2,1]]] namely, [[x,[ydata1,ydata2,ydata3...]]]
 		self.axes.cla() # Clear the current axes (From matpltlib.org/api/axes_api.html)
 		self.fig.suptitle('T-C-f')
@@ -53,6 +61,7 @@ class MyMplCanvas(FigureCanvas):
 		self.axes.grid(True)
 		self.axes.legend(loc='upper center', bbox_to_anchor=(0.8,1.16),ncol=3,fancybox=True,shadow=True)
 		self.draw()
+
 
 class MatplotlibWidget(QWidget):
 	def __init__(self, parent=None):
